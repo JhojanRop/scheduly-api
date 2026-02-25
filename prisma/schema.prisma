@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique @db.VarChar(50)
+  password  String
+  fullName  String   @map("full_name") @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  professors     Professor[]
+  subjects       Subject[]
+  rules          Rule[]
+  savedSchedules SavedSchedule[]
+
+  @@map("user")
+}
+
+model Day {
+  id   Int    @id
+  name String @db.VarChar(10)
+
+  sectionDays SectionDay[]
+
+  @@map("days")
+}
+
+model Professor {
+  id       String  @id @default(uuid())
+  fullName String  @map("full_name") @db.VarChar(100)
+  userId   String? @map("user_id")
+
+  user     User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sections Section[]
+
+  @@map("professors")
+}
+
+model Subject {
+  id     String @id @default(uuid())
+  name   String @db.VarChar(100)
+  userId String @map("user_id")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sections Section[]
+
+  @@map("subjects")
+}
+
+model Rule {
+  id            String @id @default(uuid())
+  type          String @db.VarChar(50)
+  priorityOrder Int    @map("priority_order")
+  userId        String @map("user_id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("rules")
+}
+
+model SavedSchedule {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(50)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  userId    String   @map("user_id")
+
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schedulesSections ScheduleSection[]
+
+  @@map("saved_schedules")
+}
+
+model Section {
+  id          String   @id @default(uuid())
+  startTime   DateTime @map("start_time") @db.Timetz()
+  endTime     DateTime @map("end_time") @db.Timetz()
+  subjectId   String   @map("subject_id")
+  professorId String?  @map("professor_id")
+
+  subject           Subject           @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  professor         Professor?        @relation(fields: [professorId], references: [id], onDelete: SetNull)
+  sectionDays       SectionDay[]
+  schedulesSections ScheduleSection[]
+
+  @@map("sections")
+}
+
+model SectionDay {
+  id        String @id @default(uuid())
+  sectionId String @map("section_id")
+  dayId     Int    @map("day_id")
+
+  section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  day     Day     @relation(fields: [dayId], references: [id])
+
+  @@map("sections_days")
+}
+
+model ScheduleSection {
+  scheduleId String @map("schedule_id")
+  sectionId  String @map("section_id")
+
+  savedSchedule SavedSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  section       Section       @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@id([scheduleId, sectionId])
+  @@map("schedules_sections")
+}
