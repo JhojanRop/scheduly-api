@@ -35,7 +35,7 @@ export class AuthService {
     data: LoginDto,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const user = await this.usersService.findByUsername(data.username);
-    if (!user) throw new ConflictException('Invalid credentials');
+    if (!user) throw new UnauthorizedException('Invalid credentials');
 
     const passwordMatch = await bcrypt.compare(data.password, user.password);
     if (!passwordMatch) throw new UnauthorizedException('Invalid credentials');
