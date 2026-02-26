@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { ProfessorsModule } from './professors/professors.module';
 import { SectionsModule } from './sections/sections.module';
+import { RulesModule } from './rules/rules.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SectionsModule } from './sections/sections.module';
     SubjectsModule,
     ProfessorsModule,
     SectionsModule,
+    RulesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
