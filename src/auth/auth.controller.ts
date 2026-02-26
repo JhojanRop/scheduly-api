@@ -15,16 +15,20 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { Request, Response } from 'express';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({ summary: 'Register a new user' })
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
 
+  @ApiOperation({ summary: 'Login with username and password' })
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(
@@ -43,6 +47,7 @@ export class AuthController {
     return { accessToken };
   }
 
+  @ApiOperation({ summary: 'Refresh access token using cookie' })
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtRefreshGuard)
@@ -64,6 +69,7 @@ export class AuthController {
     return { accessToken };
   }
 
+  @ApiOperation({ summary: 'Logout and clear refresh token cookie' })
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) res: Response) {
