@@ -56,6 +56,7 @@ model Rule {
   id            String @id @default(uuid())
   type          String @db.VarChar(50)
   priorityOrder Int    @map("priority_order")
+  parameters    Json?
   userId        String @map("user_id")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
