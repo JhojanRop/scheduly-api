@@ -9,6 +9,7 @@ import { SubjectsModule } from './subjects/subjects.module';
 import { ProfessorsModule } from './professors/professors.module';
 import { SectionsModule } from './sections/sections.module';
 import { RulesModule } from './rules/rules.module';
+import { SchedulingModule } from './scheduling/scheduling.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { RulesModule } from './rules/rules.module';
     ProfessorsModule,
     SectionsModule,
     RulesModule,
+    SchedulingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
