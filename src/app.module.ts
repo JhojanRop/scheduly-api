@@ -10,6 +10,7 @@ import { ProfessorsModule } from './professors/professors.module';
 import { SectionsModule } from './sections/sections.module';
 import { RulesModule } from './rules/rules.module';
 import { SchedulingModule } from './scheduling/scheduling.module';
+import { SavedSchedulesModule } from './saved-schedules/saved-schedules.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SchedulingModule } from './scheduling/scheduling.module';
     SectionsModule,
     RulesModule,
     SchedulingModule,
+    SavedSchedulesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
