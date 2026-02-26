@@ -17,6 +17,7 @@ export class ScheduleResultDto {
   rank: number;
   score: number;
   sections: {
+    sectionId: string;
     subject: string;
     professor: string | null;
     startTime: string;
@@ -32,6 +33,7 @@ export class ScheduleResultDto {
       rank,
       score: Math.round(result.score * 100) / 100,
       sections: result.sections.map((section) => ({
+        sectionId: section.id,
         subject: section.subject.name,
         professor: section.professor?.fullName ?? null,
         startTime: section.startTime.toISOString().substring(11, 16),
